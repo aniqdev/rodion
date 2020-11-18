@@ -1,14 +1,28 @@
 <?php
+	include 'classes.php';
 	include 'header.php';
 ?>
 
 <pre>
 <?php
-	// print_r($_FILES);
-	$uploaded = false;
-	if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
-		$uploaded = move_uploaded_file($_FILES['file-pic']['tmp_name'], 'images/'.$_FILES['file-pic']['name']);
-	}
+// print_r($_FILES);
+$uploaded = false;
+if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
+	$uploaded = move_uploaded_file($_FILES['file-pic']['tmp_name'], 'images/'.$_FILES['file-pic']['name']);
+}
+
+// $image = new SingleFile('cat.jpg');
+// $image2 = new SingleFile('bird.jpg');
+
+
+// $image->filename = 'dog';
+
+// print_r($image);
+// print_r($image2);
+
+// echo "<hr>";
+// print_r($image->get_name());
+
 ?>
 </pre>
 
@@ -36,31 +50,36 @@
 	// 	echo $dir[$i];
 	// 	echo "<hr>";
 	// }
-	// print_r($_POST);
+	// print_r(__DIR__); // путь к текущей папке
+	// print_r(__FILE__); // путь к текущему файлу
+
 	if (isset($_POST['delete'])) {
-		unlink('images/'.$_POST['delete']);
+		$image = new SingleFile($_POST['delete']);
+		$image->delete();
 	}
-	$dir = scandir('images');
-	// print_r($dir);
+
+	$catalog = new Catalog('images');
+	$file_array = $catalog->getAllFiles();
 ?>
 </pre>
+
 	<br>
 	<div class="">
 <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
   <ol class="carousel-indicators">
-  	<?php for ($i=2; $i < count($dir); $i++): ?>
-    <li data-target="#carouselExampleCaptions" data-slide-to="<?= $i-2 ?>" class="<?= $i===2 ? 'active' : '' ?>"></li>
-	<?php endfor; ?>
+  	<?php foreach ($file_array as $i => $file): ?>
+    <li data-target="#carouselExampleCaptions" data-slide-to="<?= $i ?>" class="<?= $i===0 ? 'active' : '' ?>"></li>
+	<?php endforeach; ?>
   </ol>
   <div class="carousel-inner">
-  	<?php for ($i=2; $i < count($dir); $i++): ?>
-    <div class="carousel-item <?= $i===2 ? 'active' : '' ?>">
-      <img src="images/<?php echo $dir[$i] ?>" class="d-block w-100" alt="...">
+  	<?php foreach ($file_array as $i => $file): ?>
+    <div class="carousel-item <?= $i===0 ? 'active' : '' ?>">
+      <img src="<?php echo $file->path ?>" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
-        <h5 style="background: rgb(0 0 0 / 45%); padding: 15px;"><?php echo $dir[$i] ?></h5>
+        <h5 style="background: rgb(0 0 0 / 45%); padding: 15px;"><?php echo $file->filename ?></h5>
       </div>
     </div>
-	<?php endfor; ?>
+	<?php endforeach; ?>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -74,14 +93,14 @@
 	</div><!-- .carousel -->
 	<br>
 	<div class="gallery" style="display: flex; flex-wrap: wrap;">
-		<?php for ($i=2; $i < count($dir); $i++){ ?>
+		<?php foreach ($file_array as $i => $file){ ?>
 		<div class="card" style="width: 18rem; margin: 0 15px 15px 0" >
-		  <img src="images/<?php echo $dir[$i] ?>" class="card-img-top" alt="...">
+		  <img src="<?php echo $file->path ?>" class="card-img-top" alt="...">
 		  <div class="card-body">
-		    <p class="card-text"><?php echo $dir[$i] ?></p>
+		    <p class="card-text"><?php echo $file->get_name() ?></p>
 		  </div>
 		  <form action="" method="post">
-		  	<button name="delete" value="<?php echo $dir[$i] ?>" type="submit" class="btn btn-danger" style="width: 100%;">Delete</button>
+		  	<button name="delete" value="<?php echo $file->get_name() ?>" type="submit" class="btn btn-danger" style="width: 100%;">Delete</button>
 		  </form>
 		</div>
 		<?php } ?>
