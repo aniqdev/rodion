@@ -6,9 +6,15 @@
 <pre>
 <?php
 // print_r($_FILES);
-$uploaded = false;
+$uploaded = '';
 if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
-	$uploaded = move_uploaded_file($_FILES['file-pic']['tmp_name'], 'images/'.$_FILES['file-pic']['name']);
+	print_r($_FILES);
+	if (in_array($_FILES['file-pic']['type'], ['image/jpeg','image/png','some other type'])) {
+		$uploaded = move_uploaded_file($_FILES['file-pic']['tmp_name'], 'images/'.$_FILES['file-pic']['name']);
+		if($uploaded) $uploaded = 'File uploaded!';
+	}else{
+		$uploaded = 'Wrong filetype';
+	}
 }
 
 // $image = new SingleFile('cat.jpg');
@@ -28,9 +34,7 @@ if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
 
 <div class="container"><br>
 	<?php
-	if ($uploaded) {
-		echo "<p>File uploaded!</p>";
-	}
+		echo "<p>$uploaded</p>";
 	?>
 	<form action="" enctype="multipart/form-data" method="post">
 	  <div class="input-group is-invalid">
@@ -60,6 +64,12 @@ if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
 
 	$catalog = new Catalog('images');
 	$file_array = $catalog->getAllFiles();
+
+
+	$obj = new Catalog('test directory 2');
+	print_r($obj->dir_path);
+	$obj->create_dir();
+	// $obj->remove_dir();
 ?>
 </pre>
 
@@ -73,7 +83,7 @@ if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
   </ol>
   <div class="carousel-inner">
   	<?php foreach ($file_array as $i => $file): ?>
-    <div class="carousel-item <?= $i===0 ? 'active' : '' ?>">
+    <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
       <img src="<?php echo $file->path ?>" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5 style="background: rgb(0 0 0 / 45%); padding: 15px;"><?php echo $file->filename ?></h5>
