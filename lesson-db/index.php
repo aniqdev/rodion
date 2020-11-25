@@ -40,7 +40,7 @@ if (isset($_POST['add-user'])) {
 
     print_r($query);
 
-    DB::getInstance()->get_results($query);
+    DB::getInstance()->query($query);
 }
 
 	// $hash = md5('#$%^&*('.'123');
