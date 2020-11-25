@@ -50,9 +50,7 @@ class Db
         $row = null;
         
         $results = $this->link->query( $query );
-        if( $this->link->error )
-        {
-            $this->log_db_errors( $this->link->error, $query );
+        if( $this->link->error ){
             return false;
         }else{
             $row = [];
@@ -64,6 +62,30 @@ class Db
         }
     }
 
+
+     public function escape( $data )
+     {
+         if( !is_array( $data ) )
+         {
+             $data = $this->link->real_escape_string( $data );
+         }
+         else
+         {
+             //Self call function to sanitize array data
+             $data = array_map( array( $this, 'escape' ), $data );
+         }
+         return $data;
+     }
+
+
+    static function getInstance()
+    {
+        if( self::$inst == null )
+        {
+            self::$inst = new self();
+        }
+        return self::$inst;
+    }
 
 }
 
