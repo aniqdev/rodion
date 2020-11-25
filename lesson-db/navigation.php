@@ -7,16 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/index.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="index.php">Home</a>
         </li>
         <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/pacient.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="/pacient.php">Pacient</a>
-        </li>
-        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/reviews.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="/reviews.php">Reviews</a>
-        </li>
-        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/contacts.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="/contacts.php">Contacts</a>
+          <a class="nav-link" href="userAdministration.php">userAdministration</a>
         </li>
       </ul>
     </div>

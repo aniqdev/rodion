@@ -18,5 +18,5 @@
   </head>
   <body>
 <?php
-// include 'navigation.php';
+include 'navigation.php';
 ?>
