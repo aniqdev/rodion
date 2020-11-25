@@ -41,13 +41,12 @@ class Db
             return $row;   
         }
     }
-    
+
     public function query( $query )
     {
         $full_query = $this->link->query( $query );
         if( $this->link->error )
         {
-            $this->log_db_errors( $this->link->error, $query );
             return false; 
         }
         else
