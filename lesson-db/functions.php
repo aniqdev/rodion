@@ -17,3 +17,9 @@ function db_query($query = '')
 	}
 }
 
+
+function db_escape($string = '')
+{
+	return DB::getInstance()->escape($string);
+}
+
