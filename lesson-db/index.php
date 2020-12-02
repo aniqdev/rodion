@@ -144,5 +144,5 @@ if (isset($_GET['user_id'])) {
 </div>
 
 <?php
-	include 'footer.php';
+	include __DIR__.'/footer.php';
 ?>

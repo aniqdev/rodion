@@ -1,0 +1,16 @@
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active{
+    color: rgba(0,0,0,.9);
+    color: #fff;
+    background: #647cb3;
+    border-radius: 8px;
+}
+
+.login-form{
+	max-width: 500px;
+    margin: auto;
+    border: 1px solid #999;
+    padding: 25px;
+    border-radius: 8px;
+    margin-top: 50px;
+    box-shadow: 0 0 10px #ccc;
+}

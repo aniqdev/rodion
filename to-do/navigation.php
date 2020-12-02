@@ -9,11 +9,8 @@
         <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/index.php' ? 'active' : '' ?>">
           <a class="nav-link" href="index.php">Home</a>
         </li>
-        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/userAdministration.php' ? 'active' : '' ?>">
+        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/pacient.php' ? 'active' : '' ?>">
           <a class="nav-link" href="userAdministration.php">userAdministration</a>
-        </li>
-        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/login.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="login.php">login</a>
         </li>
       </ul>
     </div>
