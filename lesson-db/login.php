@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
@@ -14,7 +15,6 @@
 			$checked = check_password($password, $password_hash);
 			// var_dump($checked);
 			if($checked) {
-				session_start();
 				$_SESSION['logged'] = true;
 				$_SESSION['username'] = $username;
 				header("Location: index.php");

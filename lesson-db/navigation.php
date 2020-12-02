@@ -16,9 +16,11 @@
           <a class="nav-link" href="login.php">login</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
+      <div class="my-2 my-lg-0">
+        <?php if(isset($_SESSION['username'])) { ?>
         <h6>Hello <?= $_SESSION['username']?></h6>
-      </form>
+        <?php } ?>
+      </div>
     </div>
   </nav>
 </div>
