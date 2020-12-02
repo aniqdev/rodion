@@ -9,7 +9,10 @@
 		if ($user) {
 			$password_hash = $user[0]['password'];
 			$password = $_POST['password'];
+			// var_dump($password);
+			// var_dump($password_hash);
 			$checked = check_password($password, $password_hash);
+			// var_dump($checked);
 			if($checked) {
 				session_start();
 				$_SESSION['logged'] = true;
@@ -34,11 +37,11 @@
 <form class="login-form" method="POST">
   <div class="form-group">
     <label for="exampleInputEmail1">Username</label>
-    <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input name="username" value="asd" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+    <input name="password" value="123" type="password" class="form-control" id="exampleInputPassword1">
   </div>
   <button name="login-submit" type="submit" class="btn btn-primary">Login</button>
 </form>

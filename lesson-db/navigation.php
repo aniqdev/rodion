@@ -5,7 +5,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/index.php' ? 'active' : '' ?>">
           <a class="nav-link" href="index.php">Home</a>
         </li>
@@ -16,6 +16,9 @@
           <a class="nav-link" href="login.php">login</a>
         </li>
       </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <h6>Hello <?= $_SESSION['username']?></h6>
+      </form>
     </div>
   </nav>
 </div>

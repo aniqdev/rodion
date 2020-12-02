@@ -1,4 +1,5 @@
 <?php
+	include 'auth_check.php';
 	include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
@@ -6,6 +7,12 @@
 
 <pre>
 <?php
+
+// $hash = password_hash("123", PASSWORD_DEFAULT);
+
+// print_r($hash);
+
+// var_dump(password_verify("123", '$2y$10$UsBb6MsGSBJ6MzvoQl9X/u77sdk8Dyozgwf276iI6jT'));
 
 // $query = 'SELECT * FROM table_one';
 
