@@ -1,5 +1,6 @@
 <?php
-	include 'classes.php';
+  include 'auth_check.php';
+  include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
 ?>

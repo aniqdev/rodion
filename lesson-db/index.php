@@ -23,11 +23,12 @@ if (isset($_POST['add-user']) && $_POST['add-user'] === '') {
 	$name = $post_data['name'];
 	$last_name = $post_data['last_name'];
 	$username = $post_data['username'];
-	$password = $post_data['password'];
 	$password_confirmation = $post_data['password_confirmation'];
 	$address = $post_data['address'];
 	$city = $post_data['city'];
 	$index = $post_data['index'];
+
+	$password = hash_password($post_data['password']);
 
 	$query = "INSERT INTO users SET
 		`position` = '$position',

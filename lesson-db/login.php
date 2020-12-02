@@ -2,31 +2,45 @@
 	include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
+
+	if (isset($_POST['login-submit'])) {
+		$username = db_escape($_POST['username']);
+		$user = db_query("SELECT password FROM users WHERE username = '$username' ");
+		if ($user) {
+			$password_hash = $user[0]['password'];
+			$password = $_POST['password'];
+			$checked = check_password($password, $password_hash);
+			if($checked) {
+				session_start();
+				$_SESSION['logged'] = true;
+				$_SESSION['username'] = $username;
+				header("Location: index.php");
+			}
+		}
+	}
 ?>
 
 <pre>
 <?php
+
+// print_r($user);
+// print_r(hash_password($_POST['password']));
 
 ?>
 </pre>
 
 
 <div class="container">
-<form class="login-form">
+<form class="login-form" method="POST">
   <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    <label for="exampleInputEmail1">Username</label>
+    <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <input name="password" type="password" class="form-control" id="exampleInputPassword1">
   </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button name="login-submit" type="submit" class="btn btn-primary">Login</button>
 </form>
 </div>
 
