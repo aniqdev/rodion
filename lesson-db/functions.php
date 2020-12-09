@@ -43,17 +43,17 @@ function add_user()
 {
 	$post_data = db_escape($_POST);
 
-	$position = $post_data['position'];
-	$email = $post_data['email'];
-	$name = $post_data['name'];
-	$last_name = $post_data['last_name'];
-	$username = $post_data['username'];
-	$password_confirmation = $post_data['password_confirmation'];
-	$address = $post_data['address'];
-	$city = $post_data['city'];
-	$index = $post_data['index'];
+	$position = @$post_data['position'];
+	$email = @$post_data['email'];
+	$name = @$post_data['name'];
+	$last_name = @$post_data['last_name'];
+	$username = @$post_data['username'];
+	$password = @$post_data['password'];
+	$password_confirmation = @$post_data['password_confirmation'];
+	$address = @$post_data['address'];
+	$city = @$post_data['city'];
+	$index = @$post_data['index'];
 
-	$password = hash_password($post_data['password']);
 
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) return 'please enter valid email!';
 
@@ -70,6 +70,22 @@ function add_user()
 	if ($email_check) {
 		return 'Please choose another email address!';
 	}
+
+	if ($password !== $password_confirmation) {
+		return 'Passwords should match!';
+	}
+
+	if (strlen($password) < 8) {
+		return 'Password length should be more than 8 characters!';
+	}
+
+	if (strtolower($password) === $password || 
+		strtoupper($password) === $password ||
+		!preg_replace('/\D/', '', $password)) {
+		return 'Password should contain uppercase and lowercase letters';
+	}
+
+	$password = hash_password($post_data['password']);
 
 	$query = "INSERT INTO users SET
 		`position` = '$position',
