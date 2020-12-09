@@ -12,14 +12,14 @@
         <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/userAdministration.php' ? 'active' : '' ?>">
           <a class="nav-link" href="userAdministration.php">userAdministration</a>
         </li>
-        <li class="nav-item <?php echo $_SERVER['PHP_SELF'] === '/login.php' ? 'active' : '' ?>">
-          <a class="nav-link" href="login.php">login</a>
-        </li>
       </ul>
       <div class="my-2 my-lg-0">
-        <?php if(isset($_SESSION['username'])) { ?>
-        <h6>Hello <?= $_SESSION['username']?></h6>
-        <?php } ?>
+        <?php if(isset($_SESSION['username'])): ?>
+        <a href="?logout" class="btn btn-danger ml-3 logout-btn" style="float: right;"><i class="fa fa-times"></i></a>
+        <h6 style="float: right;line-height: 30px;">Hello <?= $_SESSION['username']?></h6>
+        <?php else: ?>
+        <a class="nav-link" href="login.php">login</a>
+        <?php endif; ?>
       </div>
     </div>
   </nav>

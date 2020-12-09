@@ -5,12 +5,20 @@
     border-radius: 8px;
 }
 
+.navbar{
+	margin-bottom: 25px;
+}
+
 .login-form{
 	max-width: 500px;
     margin: auto;
-    border: 1px solid #999;
+    border: 1px solid #ccc;
     padding: 25px;
     border-radius: 8px;
     margin-top: 50px;
     box-shadow: 0 0 10px #ccc;
+}
+
+pre{
+	margin: 0;
 }

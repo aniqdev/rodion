@@ -33,7 +33,9 @@ $users = db_query('SELECT * FROM users');
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Last name</th>
-      <th scope="col">email</th>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Last visit</th>
       <th scope="col">buttons</th>
     </tr>
   </thead>
@@ -43,7 +45,9 @@ $users = db_query('SELECT * FROM users');
       <th scope="row"><?= $user['id'] ?></th>
       <td><?= $user['name'] ?></td>
       <td><?= $user['last_name'] ?></td>
+      <td><?= $user['username'] ?></td>
       <td><?= $user['email'] ?></td>
+      <td><?= $user['last_visit'] ?></td>
       <td>
       	<a href="index.php?user_id=<?= $user['id'] ?>" class="btn btn-info" style="float: right;"><i class="fa fa-edit"></i></a>
       	<form method="POST" style="float: right;">

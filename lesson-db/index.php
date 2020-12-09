@@ -10,7 +10,6 @@
 
 // $hash = password_hash("123", PASSWORD_DEFAULT);
 
-// print_r($hash);
 
 // var_dump(password_verify("123", '$2y$10$UsBb6MsGSBJ6MzvoQl9X/u77sdk8Dyozgwf276iI6jT'));
 
@@ -24,31 +23,10 @@
 
 $post_data = db_escape($_POST);
 
+$message = '';
+
 if (isset($_POST['add-user']) && $_POST['add-user'] === '') {
-	$position = $post_data['position'];
-	$email = $post_data['email'];
-	$name = $post_data['name'];
-	$last_name = $post_data['last_name'];
-	$username = $post_data['username'];
-	$password_confirmation = $post_data['password_confirmation'];
-	$address = $post_data['address'];
-	$city = $post_data['city'];
-	$index = $post_data['index'];
-
-	$password = hash_password($post_data['password']);
-
-	$query = "INSERT INTO users SET
-		`position` = '$position',
-		email = '$email',
-		name = '$name',
-		last_name = '$last_name',
-		username = '$username',
-		`password` = '$password',
-		address = '$address',
-		city = '$city',
-		`index` = '$index' ";
-
-	db_query($query);
+	$message = add_user();
 }
 
 // print_r($_GET);
@@ -74,7 +52,6 @@ if (isset($_POST['add-user']) && $_POST['add-user'] !== '') {
 		name = '$name',
 		last_name = '$last_name',
 		username = '$username',
-		`password` = '$password',
 		address = '$address',
 		city = '$city',
 		`index` = '$index'
@@ -94,6 +71,9 @@ if (isset($_GET['user_id'])) {
 
 
 <div class="container">
+	<p style="color:red;">
+		<?= $message ?>
+	</p>
 <form method="POST">
 
   <div class="form-row">
@@ -103,7 +83,7 @@ if (isset($_GET['user_id'])) {
 	</div>
 	<div class="form-group col-md-6">
 	  <label for="inputPassword4">email</label>
-	  <input value="<?= isset($user['email']) ? $user['email'] : '' ?>" name="email" type="email" class="form-control" id="inputPassword4">
+	  <input value="<?= isset($user['email']) ? $user['email'] : '' ?>" name="email" type="text" class="form-control" id="inputPassword4">
 	</div>
   </div>
 

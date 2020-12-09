@@ -1,6 +1,7 @@
 <?php
 
 
+include 'vendor/autoload.php';
 
 /**
 	DB::getInstance()->get_results($query);

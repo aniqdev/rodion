@@ -2,7 +2,13 @@
 
 session_start();
 
-if (!isset($_SESSION['logged']) || $_SESSION['logged'] == null) {
+if (isset($_GET['logout'])) {
+	unset($_SESSION['username']);
+    header("Location: login.php"); 
+    die;
+}
+
+if (!isset($_SESSION['username'])) {
     header("Location: login.php"); 
     die;
 }

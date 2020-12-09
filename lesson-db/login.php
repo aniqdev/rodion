@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	if (isset($_SESSION['username'])) {
+	    header("Location: index.php"); 
+	    die;
+	}
 	include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
@@ -10,12 +14,9 @@
 		if ($user) {
 			$password_hash = $user[0]['password'];
 			$password = $_POST['password'];
-			// var_dump($password);
-			// var_dump($password_hash);
 			$checked = check_password($password, $password_hash);
-			// var_dump($checked);
 			if($checked) {
-				$_SESSION['logged'] = true;
+				db_query("UPDATE users SET last_visit = NOW() WHERE username = '$username' ");
 				$_SESSION['username'] = $username;
 				header("Location: index.php");
 			}
@@ -43,6 +44,9 @@
     <label for="exampleInputPassword1">Password</label>
     <input name="password" value="123" type="password" class="form-control" id="exampleInputPassword1">
   </div>
+  <p>
+  	<a href="forgot-password.php">Forgot password</a>
+  </p>
   <button name="login-submit" type="submit" class="btn btn-primary">Login</button>
 </form>
 </div>
