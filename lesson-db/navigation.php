@@ -18,7 +18,8 @@
         <a href="?logout" class="btn btn-danger ml-3 logout-btn" style="float: right;"><i class="fa fa-times"></i></a>
         <h6 style="float: right;line-height: 30px;">Hello <?= $_SESSION['username']?></h6>
         <?php else: ?>
-        <a class="nav-link" href="login.php">login</a>
+        <a class="nav-link" style="float: right" href="login.php">login</a>
+        <a class="nav-link" style="float: right" href="register.php">register</a>
         <?php endif; ?>
       </div>
     </div>
