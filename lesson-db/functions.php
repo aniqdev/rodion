@@ -82,7 +82,7 @@ function add_user()
 	if (strtolower($password) === $password || 
 		strtoupper($password) === $password ||
 		!preg_replace('/\D/', '', $password)) {
-		return 'Password should contain uppercase and lowercase letters';
+			return 'Password should contain uppercase and lowercase letters and digit(s)';
 	}
 
 	$password = hash_password($post_data['password']);
@@ -93,7 +93,7 @@ function add_user()
 		name = '$name',
 		last_name = '$last_name',
 		username = '$username',
-		`password` = '$password',
+		password = '$password',
 		address = '$address',
 		city = '$city',
 		`index` = '$index' ";
@@ -112,15 +112,15 @@ function reset_password($email)
 	try {
 	  $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 	  $mail->isSMTP();
-	  $mail->Host = 'smtp.gmail.com';
+	  $mail->Host = 'tls://smtp.gmail.com';
 	  $mail->SMTPAuth   = true;
 	  $mail->Username   = 'fgpasswprd@gmail.com';
 	  $mail->Password   = '123aa678';
-	  $mail->Port = 587;
+	  $mail->Port = 587;// 587 465
 	  $mail->setFrom('fgpasswprd@gmail.com',"Mailer");
 	  $mail->addAddress($email);//Кому отправляем
 	//$mail->addReplyTo("kudaotvetit@yandex.ru","Имя кому писать при ответе");
-	  $mail->SMTPSecure = 'tls';
+	  $mail->SMTPSecure = 'tls'; // tls ssl
 	  $mail->isHTML(true);//HTML формат
 	  $mail->Subject = "Тема сообщения";
 	  $mail->Body    = "Содержание сообщения";
@@ -131,4 +131,9 @@ function reset_password($email)
 	} catch (Exception $e) {
 	  return "Ошибка отправки: {$mail->ErrorInfo}";
 	}
+}
+
+function is_admin()
+{
+	return isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin';
 }

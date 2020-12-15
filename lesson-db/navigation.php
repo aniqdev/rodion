@@ -14,9 +14,9 @@
         </li>
       </ul>
       <div class="my-2 my-lg-0">
-        <?php if(isset($_SESSION['username'])): ?>
+        <?php if(isset($_SESSION['user'])): ?>
         <a href="?logout" class="btn btn-danger ml-3 logout-btn" style="float: right;"><i class="fa fa-times"></i></a>
-        <h6 style="float: right;line-height: 30px;">Hello <?= $_SESSION['username']?></h6>
+        <h6 style="float: right;line-height: 30px;">Hello <?= $_SESSION['user']['username']?></h6>
         <?php else: ?>
         <a class="nav-link" style="float: right" href="login.php">login</a>
         <a class="nav-link" style="float: right" href="register.php">register</a>

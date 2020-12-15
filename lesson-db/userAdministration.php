@@ -49,10 +49,14 @@ $users = db_query('SELECT * FROM users');
       <td><?= $user['email'] ?></td>
       <td><?= $user['last_visit'] ?></td>
       <td>
-      	<a href="index.php?user_id=<?= $user['id'] ?>" class="btn btn-info" style="float: right;"><i class="fa fa-edit"></i></a>
+        <?php if(is_admin()): ?>
+      	<a href="edit-user.php?user_id=<?= $user['id'] ?>" class="btn btn-info" style="float: right;"><i class="fa fa-edit"></i></a>
       	<form method="POST" style="float: right;">
       		<button type="submit" name="delete" value="<?= $user['id'] ?>" class="btn btn-danger"><i class="fa fa-trash"></i></button>
       	</form>
+        <?php elseif ($_SESSION['user']['username'] === $user['username']): ?>
+          <a href="edit-user.php?user_id=<?= $user['id'] ?>" class="btn btn-info" style="float: right;"><i class="fa fa-edit"></i></a>
+        <?php endif; ?>
       </td>
     </tr>
   	<?php } ?>

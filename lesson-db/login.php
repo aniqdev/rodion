@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if (isset($_SESSION['username'])) {
+	if (isset($_SESSION['user'])) {
 	    header("Location: index.php"); 
 	    die;
 	}
@@ -10,14 +10,14 @@
 
 	if (isset($_POST['login-submit'])) {
 		$username = db_escape($_POST['username']);
-		$user = db_query("SELECT password FROM users WHERE username = '$username' ");
+		$user = db_query("SELECT * FROM users WHERE username = '$username' ");
 		if ($user) {
 			$password_hash = $user[0]['password'];
 			$password = $_POST['password'];
 			$checked = check_password($password, $password_hash);
 			if($checked) {
 				db_query("UPDATE users SET last_visit = NOW() WHERE username = '$username' ");
-				$_SESSION['username'] = $username;
+				$_SESSION['user'] = $user[0];
 				header("Location: index.php");
 			}
 		}

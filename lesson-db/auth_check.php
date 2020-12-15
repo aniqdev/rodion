@@ -3,12 +3,12 @@
 session_start();
 
 if (isset($_GET['logout'])) {
-	unset($_SESSION['username']);
+	unset($_SESSION['user']);
     header("Location: login.php"); 
     die;
 }
 
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['user'])) {
     header("Location: login.php"); 
     die;
 }
