@@ -31,10 +31,24 @@ if (isset($_POST['add-user']) && $_POST['add-user'] === '') {
 	$message = add_user();
 }
 
-// print_r($_GET);
+// print_r($_FILES);
 // var_dump(isset($_GET['user_id']));
 
 if (isset($_POST['add-user']) && $_POST['add-user'] !== '') {
+
+	$uploaded = '';
+	$avatar = '';
+	if (isset($_FILES['file-pic']) && $_FILES['file-pic']['size'] > 0) {
+		// print_r($_FILES);
+		if (in_array($_FILES['file-pic']['type'], ['image/jpeg','image/png','image/gif'])) {
+			$avatar = 'images/'.time().'-'.$_FILES['file-pic']['name'];
+			$uploaded = move_uploaded_file($_FILES['file-pic']['tmp_name'], $avatar);
+			if($uploaded) $uploaded = 'File uploaded!';
+		}else{
+			$uploaded = 'Wrong filetype';
+		}
+	}
+
 	$user_id = (int)$_POST['add-user'];
 
 	$position = $post_data['position'];
@@ -42,8 +56,8 @@ if (isset($_POST['add-user']) && $_POST['add-user'] !== '') {
 	$name = $post_data['name'];
 	$last_name = $post_data['last_name'];
 	$username = $post_data['username'];
-	$password = $post_data['password'];
-	$password_confirmation = $post_data['password_confirmation'];
+	// $password = $post_data['password'];
+	// $password_confirmation = $post_data['password_confirmation'];
 	$address = $post_data['address'];
 	$city = $post_data['city'];
 	$index = $post_data['index'];
@@ -58,6 +72,8 @@ if (isset($_POST['add-user']) && $_POST['add-user'] !== '') {
 		city = '$city',
 		`index` = '$index'
 		WHERE id = '$user_id' ");
+
+	if($avatar) db_query("UPDATE users SET avatar = '$avatar' WHERE id = '$user_id' ");
 }
 
 if (isset($_GET['user_id'])) {
@@ -67,6 +83,7 @@ if (isset($_GET['user_id'])) {
 	// print_r($user);
 	if($user) $user = $user[0];
 	// print_r($user);
+	if($user['avatar']) $avatar = '<p><img src="'.$user['avatar'].'" alt="" style="max-width:120px"></p>';
 }
 ?>
 </pre>
@@ -75,17 +92,18 @@ if (isset($_GET['user_id'])) {
 <div class="container">
 	<p style="color:red;">
 		<?= $message ?>
+		<?= @$avatar ?>
 	</p>
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 
   <div class="input-group">
     <div class="custom-file">
       <input name="file-pic" type="file" class="custom-file-input" id="validatedInputGroupCustomFile">
       <label class="custom-file-label" for="validatedInputGroupCustomFile">Choose file...</label>
     </div>
-    <div class="input-group-append">
+<!--     <div class="input-group-append">
        <button class="btn btn-primary" type="submit">Add picture</button>
-    </div>
+    </div> -->
   </div>
 
   <div class="form-row">
@@ -139,7 +157,7 @@ if (isset($_GET['user_id'])) {
 	  <input value="<?= isset($user['index']) ? $user['index'] : '' ?>" name="index" type="text" class="form-control" id="inputZip">
 	</div>
   </div>
-  <button name="add-user" value="<?= isset($user['id']) ? $user['id'] : '' ?>" type="submit"  class="btn btn-primary">Sign in</button>
+  <button name="add-user" value="<?= isset($user['id']) ? $user['id'] : '' ?>" type="submit"  class="btn btn-primary">Save</button>
 </form>
 </div>
 

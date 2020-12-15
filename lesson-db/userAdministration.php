@@ -31,6 +31,7 @@ $users = db_query('SELECT * FROM users');
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col"></th>
       <th scope="col">Name</th>
       <th scope="col">Last name</th>
       <th scope="col">Username</th>
@@ -43,6 +44,7 @@ $users = db_query('SELECT * FROM users');
   	<?php foreach ($users as $key => $user) { ?>
     <tr>
       <th scope="row"><?= $user['id'] ?></th>
+      <td><img src="<?= $user['avatar'] ?>" alt="" style="width:40px;"></td>
       <td><?= $user['name'] ?></td>
       <td><?= $user['last_name'] ?></td>
       <td><?= $user['username'] ?></td>
