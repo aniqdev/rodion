@@ -3,6 +3,10 @@
 	include 'classes.php';
 	include 'functions.php';
 	include 'header.php';
+
+	if (isset($_GET['user_id']) && !is_admin() && $_GET['user_id'] !== $_SESSION['user']['id']) {
+		header("Location: userAdministration.php"); 
+	}
 ?>
 
 <pre>
