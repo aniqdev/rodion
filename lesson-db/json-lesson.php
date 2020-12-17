@@ -65,12 +65,16 @@ $array = [];
 
 
 
-$file = file_get_contents('files/ebay-list-may.csv');
+// $file = file_get_contents('files/ebay-list-may.csv');
 
-$file = explode("\n", $file);
+// $file = explode("\n", $file);
 
-print_r($file);
+// print_r($file);
 
+$handle = fopen('files/cdvet-feed.csv', "r");
+    // while (($data = fgets($handle)) !== FALSE) {
+    //   print_r($data);
+    // }
 
 ?>
 </pre>
@@ -78,23 +82,31 @@ print_r($file);
 <div class="container">
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Username</th>
-      <th scope="col">Email</th>
-    </tr>
-  </thead>
-  <tbody>
-  	<?php foreach ($array as $key => $user) { ?>
-    <tr>
-      <th><?= $user['id'] ?></th>
-      <td><?= $user['name'] ?></td>
-      <td><?= $user['username'] ?></td>
-      <td><?= $user['email'] ?></td>
-    </tr>
-  	<?php } ?>
-  </tbody>
+
+    <?php 
+      $is_first_row = true;
+      while (($row = fgetcsv($handle, 5000, ';')) !== FALSE) {
+        if(!$row) continue;
+        if($is_first_row):
+          ?>
+          <tr>
+            <?php foreach ($row as $col): $col = iconv('CP1250', "UTF-8", $col); ?>
+            <th scope="col"><?= substr($col, 0, 10) ?></th>
+            <?php endforeach; ?>
+          </tr>
+          <?php
+        else:
+          ?>
+          <tr>
+            <?php foreach ($row as $col): $col = iconv('CP1250', "UTF-8", $col); ?>
+            <td scope="col"><?= $col ?></td>
+            <?php endforeach; ?>
+          </tr>
+          <?php
+        endif;
+        $is_first_row = false;
+      }
+    ?>
 </table>
 </div>
 
