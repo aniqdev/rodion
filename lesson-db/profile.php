@@ -26,7 +26,11 @@ if (isset($_GET['invite'])) {
 }
 
 if (isset($_POST['send-message'])) {
-	$alert = send_message($user['name']);
+	$user_name = $user['name'];
+	$user_from = (int)$_SESSION['user']['id'];
+	$user_to = (int)$_GET['id'];
+	$message = db_escape($_POST['message']);
+	$alert = send_message($user_name, $user_from, $user_to, $message);
 }
 
 ?>
@@ -84,6 +88,9 @@ if (isset($_POST['send-message'])) {
 
 			  <dt class="col-sm-3">Email</dt>
 			  <dd class="col-sm-9"><?= $user['email'] ?></dd>
+
+			  <dt class="col-sm-3">Username</dt>
+			  <dd class="col-sm-9"><?= $user['username'] ?></dd>
 			</dl>
 		</div>
 
@@ -91,6 +98,7 @@ if (isset($_POST['send-message'])) {
 	<div class="row profile-posts my-3">
 		<div class="col"><hr></div>
 		<h2>Posts <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Add post</button></h2>
+		<div class="col">
 		<?php 
 		$posts = db_query("SELECT * FROM posts WHERE user_id = '$user_id' ORDER BY id DESC");
 		foreach ($posts as $post): ?>
@@ -103,6 +111,7 @@ if (isset($_POST['send-message'])) {
 		  </div>
 		</div>
 		<?php endforeach; ?>
+		</div>
 	</div><!-- /profile-posts -->
 </div>
 

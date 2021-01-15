@@ -13,11 +13,3 @@ if (!isset($_SESSION['user'])) {
     die;
 }
 
-?>
-<pre>
-<?php
-
-// print_r($_SESSION);
-
-?>
-</pre>

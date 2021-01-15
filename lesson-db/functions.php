@@ -184,11 +184,8 @@ function is_friends($user_from, $user_to)
 	return $requested && $responded;
 }
 
-function send_message($user_name)
+function send_message($user_name, $user_from, $user_to, $message)
 {
-	$user_from = (int)$_SESSION['user']['id'];
-	$user_to = (int)$_GET['id'];
-	$message = db_escape($_POST['message']);
 	db_query("INSERT INTO messages SET user_from = '$user_from', user_to = '$user_to', message = '$message', time_sent = NOW() ");
 
 	return get_alert('success', "Message to <b>$user_name</b> has been sent!");
