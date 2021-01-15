@@ -1,9 +1,4 @@
-<?php
-  include 'auth_check.php';
-  include 'classes.php';
-	include 'functions.php';
-	include 'header.php';
-?>
+<?php if(!defined('ROOT')) die('Not allowed') ?>
 
 <pre>
 <?php
@@ -40,7 +35,9 @@ $users = db_query('SELECT * FROM users');
     </tr>
   </thead>
   <tbody>
-  	<?php foreach ($users as $key => $user) { ?>
+  	<?php foreach ($users as $key => $user) { 
+      if(!$user['avatar']) $user['avatar'] = 'images/unnamed.jpg';
+      ?>
     <tr>
       <th scope="row"><?= $user['id'] ?></th>
       <td><img src="<?= $user['avatar'] ?>" alt="" style="width:40px;"></td>
@@ -58,6 +55,7 @@ $users = db_query('SELECT * FROM users');
         <?php elseif ($_SESSION['user']['username'] === $user['username']): ?>
           <a href="edit-user.php?user_id=<?= $user['id'] ?>" class="btn btn-info" style="float: right;"><i class="fa fa-edit"></i></a>
         <?php endif; ?>
+        <a class="btn btn-success" href="?action=profile&id=<?= $user['id'] ?>"><i class="fa fa-eye"></i></a>
       </td>
     </tr>
   	<?php } ?>
@@ -65,6 +63,3 @@ $users = db_query('SELECT * FROM users');
 </table>
 </div>
 
-<?php
-	include 'footer.php';
-?>

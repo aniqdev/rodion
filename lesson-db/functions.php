@@ -142,3 +142,62 @@ function isAdmin()
 {
 	return is_admin();
 }
+
+function add_post()
+{
+	$post_data = db_escape($_POST);
+
+	db_query("INSERT INTO posts SET
+		user_id = '$post_data[user_id]',
+		title = '$post_data[title]',
+		content = '$post_data[content]'
+	");
+}
+
+
+function increase_post_likes_count()
+{
+	$post_id = (int)$_GET['post_id'];
+	db_query("UPDATE posts SET likes_count = likes_count + 1 WHERE id = '$post_id'");
+	header("Location: index.php?action=profile&id=".$_GET['id']); 
+}
+
+function is_invited($user_from, $user_to)
+{
+	return db_query("SELECT id FROM friends WHERE user_from = '$user_from' AND user_to = '$user_to' ");
+}
+
+function invite_friend()
+{
+	$user_from = (int)$_SESSION['user']['id'];
+	$user_to = (int)$_GET['id'];
+	if (!is_invited($user_from, $user_to)) {
+		db_query("INSERT INTO friends SET user_from = '$user_from', user_to = '$user_to' ");
+	}
+}
+
+
+function is_friends($user_from, $user_to)
+{
+	$requested = db_query("SELECT id FROM friends WHERE user_from = '$user_from' AND user_to = '$user_to' ");
+	$responded = db_query("SELECT id FROM friends WHERE user_from = '$user_to' AND user_to = '$user_from' ");
+	return $requested && $responded;
+}
+
+function send_message($user_name)
+{
+	$user_from = (int)$_SESSION['user']['id'];
+	$user_to = (int)$_GET['id'];
+	$message = db_escape($_POST['message']);
+	db_query("INSERT INTO messages SET user_from = '$user_from', user_to = '$user_to', message = '$message', time_sent = NOW() ");
+
+	return get_alert('success', "Message to <b>$user_name</b> has been sent!");
+}
+
+function get_alert($status, $text)
+{
+	return '<div class="alert alert-'.$status.' alert-dismissible fade show" role="alert">
+	  '.$text.'
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>';
+}
