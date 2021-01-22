@@ -2,19 +2,30 @@
 
 
 if (isset($_POST['action']) && $_POST['action'] === 'send-message') {
-	$user_name = db_escape($_POST['user_name'])
-	$user_from = db_escape($_POST['user_from'])
-	$user_to = db_escape($_POST['user_to'])
-	$message = db_escape($_POST['message'])
+	$user_name = db_escape($_POST['user_name']);
+	$user_from = db_escape($_POST['user_from']);
+	$user_to = db_escape($_POST['user_to']);
+	$message = db_escape($_POST['message']);
 	$alert = send_message($user_name, $user_from, $user_to, $message);
-	echo json_encode(['alert' => $alert]);
+	$all_messages = get_messages_with_user($user_from, $user_to);
+	echo json_encode(['alert' => '', 'messages_list' => $all_messages]);
 	return;
 }
 
 
+function get_messages_with_user($user_from, $user_to)
+{
+	$all_messages = db_query("SELECT * FROM messages WHERE (user_from = '$user_from' AND user_to = '$user_to') OR (user_from = '$user_to' AND user_to = '$user_from') ORDER BY id DESC");
+	$all_messages = array_map(function($message)
+	{
+		return '<li class="list-group-item">'. $message['message'] .'</li>';
+	}, $all_messages);
+	return implode('', $all_messages);
+}
+
 $user = db_escape($_SESSION['user']);
 
-$all_messages = db_query("SELECT * FROM messages WHERE user_from = '$user[id]' || user_to = '$user[id]' ");
+$all_messages = db_query("SELECT *,DATE_FORMAT(time_sent, '%M %d %Y [%H:%i]') as `time` FROM messages WHERE user_from = '$user[id]' || user_to = '$user[id]' ORDER BY id DESC");
 
 $dialogs = [];
 foreach ($all_messages as $key => $message) {
@@ -24,9 +35,13 @@ foreach ($all_messages as $key => $message) {
 
 $correspondents_list = implode(',', array_keys($dialogs));
 
-$users = db_query("SELECT id,name FROM users WHERE id IN($correspondents_list) ");
+$correspondents_list = $correspondents_list . ',' . $_SESSION['user']['id'];
+
+$users = db_query("SELECT id,name,IF(avatar IS NULL or avatar = '', 'images/unnamed.jpg', avatar) as avatar FROM users WHERE id IN($correspondents_list) ");
 
 $users = array_column($users, null, 'id');
+
+
 
 ?>
 
@@ -65,9 +80,15 @@ $users = array_column($users, null, 'id');
 		    	data-userfrom="<?= $_SESSION['user']['id'] ?>"
 		    	data-userto="<?= $users[$key]['id'] ?>">
 		      <div class="accordion-body">
-		        <ul class="list-group">
-					<?php foreach ($dialog as $message): ?>
-				  		<li class="list-group-item"><?= $message['message'] ?></li>
+		        <ul class="list-group js-messages-list">
+					<?php foreach ($dialog as $message):
+						$class = ($user['id'] == $message['user_from']) ? 'from-me-bg text-light' : '';
+					 ?>
+				  		<li class="list-group-item <?= $class ?>">
+				  			<img class="chat-avatar" src="<?= $users[$message['user_from']]['avatar'] ?>" alt="">
+				  			<?= $message['message'] ?>
+				  			<small class="pull-right"><?= $message['time'] ?></small>
+				  		</li>
 					<?php endforeach; ?>
 				</ul>
 		      </div>
@@ -98,7 +119,8 @@ form.on('submit', function(e) {
 		 user_to: accordion_collapse.data('userto'),
 		 message: $('#message_input').val()},
 		function(data) {
-			cl(data)
+			accordion_collapse.find('.js-messages-list').html(data.messages_list)
+			_alert(data.alert)
 		},'json')
 })
 

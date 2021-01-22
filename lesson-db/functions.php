@@ -147,10 +147,32 @@ function add_post()
 {
 	$post_data = db_escape($_POST);
 
+	$uploaded = '';
+	$filenames = [];
+
+	$total = @count($_FILES['pics']['name']);
+
+	// Loop through each file
+	for( $i=0 ; $i < $total ; $i++ ) {
+		if ($_FILES['pics']['size'][$i] > 0) {
+			if (in_array($_FILES['pics']['type'][$i], ['image/jpeg','image/png','some other type'])) {
+				$filename = 'images/'.time().'-'.$_FILES['pics']['name'][$i];
+				$uploaded = move_uploaded_file($_FILES['pics']['tmp_name'][$i], $filename);
+				$filenames[] = $filename;
+				// if($uploaded) $uploaded = 'File uploaded!';
+			}else{
+				// $uploaded = 'Wrong filetype';
+			}
+		}
+	}
+
+	$filenames = db_escape(implode(',', $filenames));
+
 	db_query("INSERT INTO posts SET
 		user_id = '$post_data[user_id]',
 		title = '$post_data[title]',
-		content = '$post_data[content]'
+		content = '$post_data[content]',
+		pics = '$filenames'
 	");
 }
 
@@ -159,6 +181,12 @@ function increase_post_likes_count()
 {
 	$post_id = (int)$_GET['post_id'];
 	db_query("UPDATE posts SET likes_count = likes_count + 1 WHERE id = '$post_id'");
+	header("Location: index.php?action=profile&id=".$_GET['id']); 
+}
+function increase_post_dislikes_count()
+{
+	$post_id = (int)$_GET['post_id'];
+	db_query("UPDATE posts SET dislikes_count = dislikes_count + 1 WHERE id = '$post_id'");
 	header("Location: index.php?action=profile&id=".$_GET['id']); 
 }
 
@@ -197,4 +225,12 @@ function get_alert($status, $text)
 	  '.$text.'
 	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>';
+}
+
+function pp($text)
+{
+	$return = '<pre>';
+	$return .= print_r($text, true);
+	$return .= '</pre>';
+	echo $return;
 }

@@ -14,11 +14,17 @@ else $user = $user[0];
 if(!$user['avatar']) $user['avatar'] = 'images/unnamed.jpg';
 
 if (isset($_POST['add-post'])) {
+	// pp(@count($_FILES['pics']['nasme']));
+	// pp($_FILES);
+	// die;
 	add_post();
 }
 
 if (isset($_GET['likes-count']) && $_GET['likes-count'] === 'increase') {
 	increase_post_likes_count();
+}
+if (isset($_GET['dislikes-count']) && $_GET['dislikes-count'] === 'increase') {
+	increase_post_dislikes_count();
 }
 
 if (isset($_GET['invite'])) {
@@ -106,8 +112,12 @@ if (isset($_POST['send-message'])) {
 		  <div class="card-body">
 		    <h5 class="card-title"><?= $post['title'] ?></h5>
 		    <p class="card-text"><?= $post['content'] ?></p>
-		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&likes-count=increase&post_id=<?= $post['id'] ?>" style="color:red;"><i class="fa fa-heart"></i></a>
+		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&likes-count=increase&post_id=<?= $post['id'] ?>" style="color:green;"><i class="fa fa-heart"></i></a>
 		    <b><?= $post['likes_count'] ?></b>
+		    |
+		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&dislikes-count=increase&post_id=<?= $post['id'] ?>" style="color:red;"><i class="fa fa-heart-broken"></i></a>
+		    <b><?= $post['dislikes_count'] ?></b>
+
 		  </div>
 		</div>
 		<?php endforeach; ?>
@@ -121,7 +131,7 @@ if (isset($_POST['send-message'])) {
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form class="modal-content" method="POST" action="index.php?action=profile&id=<?= @$_GET['id'] ?>">
+    <form class="modal-content" method="POST" action="index.php?action=profile&id=<?= @$_GET['id'] ?>" enctype="multipart/form-data">
        <input type="hidden" name="user_id" value="<?= @$_GET['id'] ?>">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">New post</h5>
@@ -137,6 +147,10 @@ if (isset($_POST['send-message'])) {
             <label for="message-text" class="col-form-label">Post content:</label>
             <textarea name="content" class="form-control" id="message-text"></textarea>
           </div>
+	      <div class="mb-3">
+			  <label for="formFileMultiple" class="form-label">Add pics</label>
+			  <input name="pics[]" class="form-control" type="file" id="formFileMultiple" multiple>
+		  </div>
         </div>
       </div>
       <div class="modal-footer">
