@@ -25,7 +25,7 @@
 
       <div class="d-flex">
         <?php if(isset($_SESSION['user'])): ?>
-        <div style="padding: .375rem .75rem;">Hello <?= $_SESSION['user']['username']?></div>
+        <div style="padding: .375rem .75rem;">Hello <?= $_SESSION['user']['username']?>[<?= $_SESSION['user']['id']?>]</div>
         <a href="?logout" class="btn btn-danger ms-2 logout-btn"><i class="fa fa-times" style="line-height: 20px;"></i></a>
         <?php else: ?>
         <a class="nav-link" style="float: right" href="login.php">login</a>

@@ -2,6 +2,16 @@
 
 <?php
 
+if (!empty($_POST['delete_post'])) {
+	$post_id = $_POST['delete_post'];
+	$deleted = delete_post($post_id);
+	echo json_encode([
+		'status' => $deleted ? 'ok' : 'error',
+		'post_id' => $post_id,
+	]);
+	return;
+}
+
 $alert = '';
 
 $user_id = (int)$_GET['id'];
@@ -18,6 +28,10 @@ if (isset($_POST['add-post'])) {
 	// pp($_FILES);
 	// die;
 	add_post();
+}
+
+if (isset($_POST['post-toogle-private'])) {
+	post_toogle_private($_POST['post_id']);
 }
 
 if (isset($_GET['likes-count']) && $_GET['likes-count'] === 'increase') {
@@ -103,13 +117,33 @@ if (isset($_POST['send-message'])) {
 	</div><!-- /profile-info -->
 	<div class="row profile-posts my-3">
 		<div class="col"><hr></div>
-		<h2>Posts <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Add post</button></h2>
+		<h2>Posts 
+		<?php if(is_me($_GET['id']) || is_admin()): ?>
+		<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Add post</button>
+		<?php endif; ?>
+		</h2>
 		<div class="col">
 		<?php 
 		$posts = db_query("SELECT * FROM posts WHERE user_id = '$user_id' ORDER BY id DESC");
-		foreach ($posts as $post): ?>
-		<div class="card my-1">
+		foreach ($posts as $post):
+			if (!can_i_see_post($post)) continue;
+		 ?>
+		<div class="card my-1 js-post-<?= $post['id'] ?>">
+		  <?php if(is_me($_GET['id']) || is_admin()): ?>
+      	  <form method="POST" class="delete_post_form">
+      	  	<input type="hidden" name="delete_post" value="<?= $post['id'] ?>">
+      	  	<button type="submit" class="btn btn-outline-danger delete-post"><i class="fa fa-trash"></i></button>
+      	  </form>
+      	  <form method="POST">
+      	  	<input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+      	  	<button type="submit" name="post-toogle-private" class="btn btn-outline-primary post-make-private 
+      	  	<?= $post['is_private'] ? 'inactive' : '' ?>"><i class="fa fa-eye"></i></button>
+      	  </form>
+      	  <?php endif; ?>
 		  <div class="card-body">
+		  	<div class="post-pics d-flex">
+		  		<?= get_post_imgs($post) ?>
+		  	</div>
 		    <h5 class="card-title"><?= $post['title'] ?></h5>
 		    <p class="card-text"><?= $post['content'] ?></p>
 		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&likes-count=increase&post_id=<?= $post['id'] ?>" style="color:green;"><i class="fa fa-heart"></i></a>
@@ -138,19 +172,23 @@ if (isset($_POST['send-message'])) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div>
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Post title:</label>
-            <input name="title" type="text" class="form-control" id="recipient-name">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">Post content:</label>
-            <textarea name="content" class="form-control" id="message-text"></textarea>
-          </div>
-	      <div class="mb-3">
-			  <label for="formFileMultiple" class="form-label">Add pics</label>
-			  <input name="pics[]" class="form-control" type="file" id="formFileMultiple" multiple>
-		  </div>
+		<div class="mb-3">
+			<label for="recipient-name" class="col-form-label">Post title:</label>
+			<input name="title" type="text" class="form-control" id="recipient-name">
+		</div>
+		<div class="mb-3">
+			<label for="message-text" class="col-form-label">Post content:</label>
+			<textarea name="content" class="form-control" id="message-text"></textarea>
+		</div>
+		<div class="mb-3">
+			<label for="formFileMultiple" class="form-label">Add pics</label>
+			<input name="pics[]" class="form-control" type="file" id="formFileMultiple" multiple>
+		</div>
+        <div class="form-check">
+		  <input name="is_private" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+		  <label class="form-check-label" for="flexCheckDefault">
+		    Private
+		  </label>
         </div>
       </div>
       <div class="modal-footer">
@@ -193,6 +231,20 @@ if (isset($_POST['send-message'])) {
 
 
 <script>
+var cl = console.log
+
+$('.delete_post_form').submit(function(e) {
+	e.preventDefault()
+	if(!confirm('Are you sure?')) return false
+	$.post('ajax.php'+location.search,
+		$(this).serialize(),
+		function(data) {
+		if (data.status === 'ok') {
+			$('.js-post-' + data.post_id).remove()
+		}
+	}, 'json')
+})
+
 setTimeout(function() {
     $(".alert").alert('close');
 }, 5000);

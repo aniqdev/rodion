@@ -145,7 +145,12 @@ function isAdmin()
 
 function add_post()
 {
+	if(!is_me($_GET['id']) && !is_admin()) return false;
+
 	$post_data = db_escape($_POST);
+
+	$is_private = isset($post_data['is_private']) ? 1 : 0;
+	pp($is_private);
 
 	$uploaded = '';
 	$filenames = [];
@@ -172,7 +177,8 @@ function add_post()
 		user_id = '$post_data[user_id]',
 		title = '$post_data[title]',
 		content = '$post_data[content]',
-		pics = '$filenames'
+		pics = '$filenames',
+		is_private = '$is_private'
 	");
 }
 
@@ -233,4 +239,64 @@ function pp($text)
 	$return .= print_r($text, true);
 	$return .= '</pre>';
 	echo $return;
+}
+
+function delete_post($post_id)
+{
+	if(!is_me($_GET['id']) && !is_admin()) return false;
+
+	$post_id = (int)$post_id;
+	$post = db_query("SELECT pics FROM posts WHERE id = '$post_id'");
+	if ($post) {
+		$pics = $post[0]['pics'];
+		if ($pics) {
+			foreach (explode(',', $pics) as $pic) {
+				unlink(ROOT . '/' . $pic);
+			}
+		}
+	}
+	db_query("DELETE FROM posts WHERE id = '$post_id' ");
+	return true;
+}
+
+function get_post_imgs(&$post)
+{
+	$pics = '';
+	if ($post['pics']) {
+		$pics = explode(',', $post['pics']);
+		$pics = array_map(function($src)
+		{
+			return '<a data-fancybox="gallery" href="'.$src.'"><img src="'.$src.'"></a>';
+		}, $pics);
+		$pics = implode('', $pics);
+	}
+	return $pics;
+}
+
+function can_i_see_post($post)
+{
+	$user_from = $_SESSION['user']['id'];
+	$user_to = $_GET['id'];
+
+	if($user_from == $user_to) return true;
+
+	if($post['is_private'] == 0) return true;
+
+	if(is_friends($user_from, $user_to)) return true;
+}
+
+function is_me($user_id, $true = true, $false = false)
+{
+	if ($user_id == $_SESSION['user']['id']) {
+		return $true;
+	}else{
+		return $false;
+	}
+}
+
+function post_toogle_private($post_id)
+{
+	$post_id = (int)$post_id;
+	db_query("UPDATE posts SET is_private = IF(is_private = 1, 0, 1) WHERE id = '$post_id' ");
+	header("Location: index.php?action=profile&id=".$_GET['id']);
 }

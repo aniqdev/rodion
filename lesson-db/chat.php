@@ -87,7 +87,7 @@ $users = array_column($users, null, 'id');
 				  		<li class="list-group-item <?= $class ?>">
 				  			<img class="chat-avatar" src="<?= $users[$message['user_from']]['avatar'] ?>" alt="">
 				  			<?= $message['message'] ?>
-				  			<small class="pull-right"><?= $message['time'] ?></small>
+				  			<small style="float: right;"><?= $message['time'] ?></small>
 				  		</li>
 					<?php endforeach; ?>
 				</ul>
