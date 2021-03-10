@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/style.css">
+	<title>Memory Spiel</title>
+	
+</head>
+<body>
+	<div class="wrapper">
+		<div class="infobox">
+			<div class="labels">
+				Spieler:
+				<form onsubmit="enter_name_submit(event, this)" style="display: inline;">
+					<input id="name_input" type="text">
+					<button type="submit">go!</button>
+				</form>
+			</div>
+			<div class="labels">
+				
+			</div>
+		</div>
+		<div id = "playground">
+			<div onclick="col_click(this)" data-index="0" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="1" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="2" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="3" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="4" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="5" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="6" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="7" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="8" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="9" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="10" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="11" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="12" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="13" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="14" class="play-col grey"></div>
+			<div onclick="col_click(this)" data-index="15" class="play-col grey"></div>
+		</div>
+		<div class="infobox">
+			<div class="labels">
+				Versuche: <span id="tries_counter">0</span>
+			</div>
+			<div class="labels">
+				
+			</div>
+		</div>
+		<div class="infobox">
+			<div class="labels">
+				Zeit: <span id="seconds_counter">0</span>
+			</div>
+			<div class="labels">
+				
+			</div>
+		</div>
+	</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -30,16 +30,6 @@ if (isset($_POST['add-post'])) {
 	add_post();
 }
 
-if (isset($_POST['post-toogle-private'])) {
-	post_toogle_private($_POST['post_id']);
-}
-
-if (isset($_GET['likes-count']) && $_GET['likes-count'] === 'increase') {
-	increase_post_likes_count();
-}
-if (isset($_GET['dislikes-count']) && $_GET['dislikes-count'] === 'increase') {
-	increase_post_dislikes_count();
-}
 
 if (isset($_GET['invite'])) {
 	invite_friend();
@@ -60,8 +50,9 @@ if (isset($_POST['send-message'])) {
 <?php
 // print_r($user);
 // print_r($user);
-// print_r($_POST);
+print_r($_POST);
 // print_r($_SESSION);
+
 
 ?>
 </pre>
@@ -78,12 +69,14 @@ if (isset($_POST['send-message'])) {
 			  <div class="card-body">
 			    <h5 class="card-title">Card title</h5>
 			    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			    <?php if(!is_invited((int)$_SESSION['user']['id'], (int)$_GET['id'])): ?>
-			    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&invite" class="btn btn-primary">Invite</a>
-			    <?php elseif (is_friends((int)$_SESSION['user']['id'], (int)$_GET['id'])): ?>
-			    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">Send message</button>
-				<?php else: ?>
-			    <a class="btn btn-primary">Request sent</a>
+			    <?php if(!is_anonymous()): ?>
+				    <?php if(!is_invited((int)$_SESSION['user']['id'], (int)$_GET['id'])): ?>
+				    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&invite" class="btn btn-primary">Invite</a>
+				    <?php elseif (is_friends((int)$_SESSION['user']['id'], (int)$_GET['id'])): ?>
+				    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">Send message</button>
+					<?php else: ?>
+				    <a class="btn btn-primary">Request sent</a>
+					<?php endif; ?>
 				<?php endif; ?>
 			  </div>
 			</div>
@@ -151,7 +144,8 @@ if (isset($_POST['send-message'])) {
 		    |
 		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&dislikes-count=increase&post_id=<?= $post['id'] ?>" style="color:red;"><i class="fa fa-heart-broken"></i></a>
 		    <b><?= $post['dislikes_count'] ?></b>
-
+		    <hr>
+		    <?php include ROOT.'/post-comments.php'; ?>
 		  </div>
 		</div>
 		<?php endforeach; ?>

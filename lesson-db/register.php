@@ -48,7 +48,9 @@ if (isset($_POST['add-user']) && $_POST['add-user'] === '') {
 	  <label for="inputEmail4">Confirm password</label>
 	  <input value="<?= @$_POST['password_confirmation'] ?>" name="password_confirmation" type="password" class="form-control" id="inputEmail4">
 	</div>
-
+	<p>Already have an account? 
+		<a href="login.php">Login</a>
+	</p>
   <button name="add-user" value="<?= isset($user['id']) ? $user['id'] : '' ?>" type="submit"  class="btn btn-primary">Sign in</button>
 </form>
 </div>

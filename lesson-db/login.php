@@ -22,6 +22,15 @@
 			}
 		}
 	}
+	if (isset($_POST['login-anonymous'])) {
+			$_SESSION['user'] = [
+				'id' => 0,
+				'username' => 'anonymous',
+				'name' => 'anonymous',
+				'role' => 'anonymous',
+			];
+			header("Location: index.php");
+	}
 ?>
 
 <pre>
@@ -45,9 +54,10 @@
     <input name="password" value="123" type="password" class="form-control" id="exampleInputPassword1">
   </div>
   <p>
-  	<a href="forgot-password.php">Forgot password</a>
+  	<a href="register.php">Register</a>
   </p>
   <button name="login-submit" type="submit" class="btn btn-primary">Login</button>
+  <button name="login-anonymous" type="submit" class="btn btn-primary">Login as anonymous</button>
 </form>
 </div>
 

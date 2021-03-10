@@ -6,14 +6,21 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
       <ul class="navbar-nav mb-2 mb-lg-0">
+        <?php if(!is_anonymous()): ?>
         <li class="nav-item <?php echo @$_GET['action'] === 'profile' ? 'active' : '' ?>">
           <a class="nav-link" href="?action=profile&id=<?= $_SESSION['user']['id'] ?>" title="My profile">Profile</a>
         </li>
+        <?php endif; ?>
         <li class="nav-item <?php echo @$_GET['action'] === 'userAdministration' ? 'active' : '' ?>">
           <a class="nav-link" href="index.php?action=userAdministration">Users</a>
         </li>
+        <?php if(!is_anonymous()): ?>
         <li class="nav-item <?php echo @$_GET['action'] === 'chat' ? 'active' : '' ?>">
           <a class="nav-link" href="index.php?action=chat">Chat</a>
+        </li>
+        <?php endif; ?>
+        <li class="nav-item <?php echo @$_GET['action'] === 'posts' ? 'active' : '' ?>">
+          <a class="nav-link" href="index.php?action=posts">Posts</a>
         </li>
       </ul>
 

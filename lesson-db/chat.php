@@ -36,10 +36,11 @@ foreach ($all_messages as $key => $message) {
 $correspondents_list = implode(',', array_keys($dialogs));
 
 $correspondents_list = $correspondents_list . ',' . $_SESSION['user']['id'];
+// pp($correspondents_list);
 
 $users = db_query("SELECT id,name,IF(avatar IS NULL or avatar = '', 'images/unnamed.jpg', avatar) as avatar FROM users WHERE id IN($correspondents_list) ");
-
-$users = array_column($users, null, 'id');
+// pp($users);
+if($users) $users = array_column($users, null, 'id');
 
 
 

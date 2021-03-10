@@ -24,5 +24,5 @@
   </head>
   <body>
 <?php
-include 'navigation.php';
+if(is_logged()) include 'navigation.php';
 ?>

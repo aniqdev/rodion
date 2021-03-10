@@ -187,13 +187,13 @@ function increase_post_likes_count()
 {
 	$post_id = (int)$_GET['post_id'];
 	db_query("UPDATE posts SET likes_count = likes_count + 1 WHERE id = '$post_id'");
-	header("Location: index.php?action=profile&id=".$_GET['id']); 
+	header("Location: index.php?action=".$_GET['action']."&id=".@$_GET['id']);
 }
 function increase_post_dislikes_count()
 {
 	$post_id = (int)$_GET['post_id'];
 	db_query("UPDATE posts SET dislikes_count = dislikes_count + 1 WHERE id = '$post_id'");
-	header("Location: index.php?action=profile&id=".$_GET['id']); 
+	header("Location: index.php?action=".$_GET['action']."&id=".@$_GET['id']); 
 }
 
 function is_invited($user_from, $user_to)
@@ -276,13 +276,15 @@ function get_post_imgs(&$post)
 function can_i_see_post($post)
 {
 	$user_from = $_SESSION['user']['id'];
-	$user_to = $_GET['id'];
-
+	$user_to = $post['user_id'];
+// var_dump($user_from == $user_to);
 	if($user_from == $user_to) return true;
-
+// var_dump($post['is_private'] == 0);
 	if($post['is_private'] == 0) return true;
-
+// var_dump(is_friends($user_from, $user_to));
 	if(is_friends($user_from, $user_to)) return true;
+
+	return false;
 }
 
 function is_me($user_id, $true = true, $false = false)
@@ -298,5 +300,31 @@ function post_toogle_private($post_id)
 {
 	$post_id = (int)$post_id;
 	db_query("UPDATE posts SET is_private = IF(is_private = 1, 0, 1) WHERE id = '$post_id' ");
-	header("Location: index.php?action=profile&id=".$_GET['id']);
+	header("Location: index.php?action=".$_GET['action']."&id=".$_GET['id']);
+}
+
+function is_anonymous()
+{
+	return isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'anonymous';
+}
+
+function is_logged()
+{
+	return isset($_SESSION['user']);
+}
+
+function delete_user($user_id)
+{
+	db_query("DELETE FROM users WHERE id = '$user_id'");
+	db_query("DELETE FROM posts WHERE user_id = '$user_id'");
+}
+
+function add_post_comment($post_id, $user_id, $comment)
+{
+	$post_id = (int)$post_id;
+	$user_id = (int)$user_id;
+	$comment = db_escape($comment);
+	db_query("INSERT INTO post_comments SET post_id = '$post_id', user_id = '$user_id', comment = '$comment', created = NOW() ");
+	header('Location:'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);
+	die;
 }

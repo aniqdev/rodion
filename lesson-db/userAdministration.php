@@ -8,7 +8,7 @@
 
 if (isset($_POST['delete'])) {
 	$user_id = (int)$_POST['delete'];
-	db_query("DELETE FROM users WHERE id = '$user_id'");
+  delete_user($user_id);
 }
 
 
