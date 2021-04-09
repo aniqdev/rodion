@@ -1,0 +1,9 @@
+{
+    "name": "Kirill",
+    "age": 25,
+    "is_single": true,
+    "address": {
+        "city": "NY",
+        "street": "Awenu"
+    }
+}

@@ -1,0 +1,62 @@
+body{
+	background: #c0c0c0;
+}
+
+#browser_name{
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 50px;
+}
+
+.game-wrapper{
+	display: flex;
+	flex-wrap: wrap;
+	margin: auto;
+	width: 462px;
+	height: 462px;
+	background: #000;
+	position: relative;
+}
+.game-wrapper img{
+	width: 154px;
+	height: 154px;
+	padding: 2px;
+	position: absolute;
+	transition: all .5s;
+}
+.game-wrapper.game-done img{
+	padding: 0;
+}
+
+
+.game-wrapper img.marked{
+    filter: sepia(1);
+}
+
+.game-wrapper img.img1{ left: 0; top: 0; }
+.game-wrapper img.img2{ left: 33.3333%; top: 0; }
+.game-wrapper img.img3{ left: 66.6666%; top: 0; }
+.game-wrapper img.img4{ left: 0; top: 33.3333%; }
+.game-wrapper img.img5{ left: 33.3333%; top: 33.3333%; }
+.game-wrapper img.img6{ left: 66.6666%; top: 33.3333%; }
+.game-wrapper img.img7{ left: 0; top: 66.6666%; }
+.game-wrapper img.img8{ left: 33.3333%; top: 66.6666%; }
+.game-wrapper img.img9{ left: 66.6666%; top: 66.6666%; }
+
+.congrats{
+	z-index: 1;   
+	color: #f2ffaa;
+	text-shadow: 0 0 10px #000;
+    margin: auto;
+    font-size: 55px;
+    animation: congratsFS 1s ease-in-out;
+}
+
+@keyframes congratsFS{
+	from{
+		font-size: 12px;
+	}
+	to{
+		font-size: 55px;
+	}
+}

@@ -1,0 +1,1 @@
+<img class="mx-auto d-block" src="images/404.png" alt="" style="max-width: 100%;">
