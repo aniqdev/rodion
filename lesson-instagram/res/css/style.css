@@ -32,10 +32,18 @@ pre{
     border-radius: 6px;
 }
 
-.post-pics img{
-    max-width: 50px;
-    max-height: 50px;
-    margin: 5px;
+.post-pics{
+    margin: -15px -15px 15px;
+}
+
+.post-pics .carousel-item{
+    height: 350px;
+}
+
+.post-pics .carousel-item img{
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
 }
 
 .delete-post{
@@ -47,6 +55,7 @@ pre{
     top: 8px;
     padding: 3px 9px;
     line-height: 27px;
+    z-index: 1;
 }
 
 .post-make-private{
@@ -58,8 +67,19 @@ pre{
     top: 8px;
     padding: 3px 9px;
     line-height: 27px;
+    z-index: 1;
 }
 .post-make-private.inactive{
     color: #dfdfdf;
     border-color: #dfdfdf;
+}
+
+.carousel-control-next, .carousel-control-prev{
+    background: transparent;
+    border: 0;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+    filter: drop-shadow( 1px 1px 3px black);
 }

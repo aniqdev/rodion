@@ -264,13 +264,8 @@ function get_post_imgs(&$post)
 	$pics = '';
 	if ($post['pics']) {
 		$pics = explode(',', $post['pics']);
-		$pics = array_map(function($src)
-		{
-			return '<a data-fancybox="gallery" href="'.$src.'"><img src="'.$src.'"></a>';
-		}, $pics);
-		$pics = implode('', $pics);
+		include ROOT.'/templates/carousel.php';
 	}
-	return $pics;
 }
 
 function can_i_see_post($post)

@@ -116,39 +116,43 @@ print_r($_POST);
 		<?php endif; ?>
 		</h2>
 		<div class="col">
-		<?php 
-		$posts = db_query("SELECT * FROM posts WHERE user_id = '$user_id' ORDER BY id DESC");
-		foreach ($posts as $post):
-			if (!can_i_see_post($post)) continue;
-		 ?>
-		<div class="card my-1 js-post-<?= $post['id'] ?>">
-		  <?php if(is_me($_GET['id']) || is_admin()): ?>
-      	  <form method="POST" class="delete_post_form">
-      	  	<input type="hidden" name="delete_post" value="<?= $post['id'] ?>">
-      	  	<button type="submit" class="btn btn-outline-danger delete-post"><i class="fa fa-trash"></i></button>
-      	  </form>
-      	  <form method="POST">
-      	  	<input type="hidden" name="post_id" value="<?= $post['id'] ?>">
-      	  	<button type="submit" name="post-toogle-private" class="btn btn-outline-primary post-make-private 
-      	  	<?= $post['is_private'] ? 'inactive' : '' ?>"><i class="fa fa-eye"></i></button>
-      	  </form>
-      	  <?php endif; ?>
-		  <div class="card-body">
-		  	<div class="post-pics d-flex">
-		  		<?= get_post_imgs($post) ?>
-		  	</div>
-		    <h5 class="card-title"><?= $post['title'] ?></h5>
-		    <p class="card-text"><?= $post['content'] ?></p>
-		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&likes-count=increase&post_id=<?= $post['id'] ?>" style="color:green;"><i class="fa fa-heart"></i></a>
-		    <b><?= $post['likes_count'] ?></b>
-		    |
-		    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&dislikes-count=increase&post_id=<?= $post['id'] ?>" style="color:red;"><i class="fa fa-heart-broken"></i></a>
-		    <b><?= $post['dislikes_count'] ?></b>
-		    <hr>
-		    <?php include ROOT.'/post-comments.php'; ?>
-		  </div>
-		</div>
-		<?php endforeach; ?>
+			<div class="row">
+				<?php 
+				$posts = db_query("SELECT * FROM posts WHERE user_id = '$user_id' ORDER BY id DESC");
+				foreach ($posts as $post):
+					if (!can_i_see_post($post)) continue;
+				 ?>
+				 <div class="col-sm-4">
+					<div class="card my-1 js-post-<?= $post['id'] ?>">
+					  <?php if(is_me($_GET['id']) || is_admin()): ?>
+			      	  <form method="POST" class="delete_post_form">
+			      	  	<input type="hidden" name="delete_post" value="<?= $post['id'] ?>">
+			      	  	<button type="submit" class="btn btn-outline-danger delete-post"><i class="fa fa-trash"></i></button>
+			      	  </form>
+			      	  <form method="POST">
+			      	  	<input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+			      	  	<button type="submit" name="post-toogle-private" class="btn btn-outline-primary post-make-private 
+			      	  	<?= $post['is_private'] ? 'inactive' : '' ?>"><i class="fa fa-eye"></i></button>
+			      	  </form>
+			      	  <?php endif; ?>
+					  <div class="card-body">
+					  	<div class="post-pics">
+					  		<?= get_post_imgs($post) ?>
+					  	</div>
+					    <h5 class="card-title"><?= $post['title'] ?></h5>
+					    <p class="card-text"><?= $post['content'] ?></p>
+					    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&likes-count=increase&post_id=<?= $post['id'] ?>" style="color:green;"><i class="fa fa-heart"></i></a>
+					    <b><?= $post['likes_count'] ?></b>
+					    |
+					    <a href="index.php?action=profile&id=<?= @$_GET['id'] ?>&dislikes-count=increase&post_id=<?= $post['id'] ?>" style="color:red;"><i class="fa fa-heart-broken"></i></a>
+					    <b><?= $post['dislikes_count'] ?></b>
+					    <hr>
+					    <?php include ROOT.'/post-comments.php'; ?>
+					  </div>
+					</div>
+				</div>
+				<?php endforeach; ?>
+			</div>
 		</div>
 	</div><!-- /profile-posts -->
 </div>
