@@ -1,4 +1,132 @@
+body{
+    background: #46c0dc;
+    color: #45505e;
+}
+
 .card {
     height: 100%;
+    cursor: pointer;
+}
+
+.content-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.first-letter{
+    height: 50px;
+    width: 50px;
+    background: #7cbcda;
+    color: white;
+    font-size: 35px;
+    text-align: center;
+    line-height: 45px;
+    border-radius: 50px;
+    margin: auto;
+    border: 2px solid #607088;
+    font-family: arial;
+}
+
+.meeting-content{
+    background: white;
+    margin: 50px 0;
+    border-radius: .25rem;
+}
+
+.meeting-content hr{
+    margin: 0;
+}
+
+.meeting-title{
+    font-size: 32px;
+    padding: 6px 20px;
+}
+
+.meeting-subtitle{
+    text-align: center;
+    font-size: 26px;
+}
+
+.poll{
+   margin: 25px 15%;
+}
+
+.poll-option{
+    border: 1px solid #ccc;
+    margin: 15px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vote{
+    display: flex;
+    align-items: center;
+}
+
+.votes-qtt{
+    font-size: 26px;
+    margin-right: 8px;
+}
+
+.meeting-body{
+    padding: 20px;
+}
+
+.meeting-body .notes{
+    list-style: none;
+    padding: 0;
+}
+
+.meeting-body .notes li{
+    margin: 15px 0;
+}
+
+.questions{
+
+}
+
+.question{
+
+}
+
+.question-inp-wrapper{
+    display: flex;
+}
+
+.question-inp{
+    width: 70%;
+    border: 1px solid #ccc;
+}
+
+.question-inp-wrapper button{
+    width: 30%;
+    border: 1px solid #191919;
+    background: #70969e;
+    color: #fff;
+}
+
+button.del-question-btn{
+    background: #b94545;
+    color: white;
+}
+
+.option-wrapper{
+    display: flex;
+    align-items: baseline;
+}
+
+.option{
+    display: block;
+    margin-left: 30px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+}
+
+.del-option{
+    margin-left: 5px;
+    color: red;
     cursor: pointer;
 }
